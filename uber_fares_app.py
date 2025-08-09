@@ -233,7 +233,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
             pickup_season_Spring, pickup_season_Summer, pickup_season_Winter,
             pickup_period_Evening, pickup_period_Morning, pickup_period_Night):
 
-    features = [[
+    features = [
         pickup_longitude,
         pickup_latitude,
         dropoff_longitude,
@@ -250,7 +250,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
         pickup_period_Evening,
         pickup_period_Morning,
         pickup_period_Night
-    ]]
+    ]
 
     # Scaling semua fitur sekaligus
     features_scaled = scaler.transform([features])
@@ -266,6 +266,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
 if __name__ == "__main__":
 
     main()
+
 
 
 
