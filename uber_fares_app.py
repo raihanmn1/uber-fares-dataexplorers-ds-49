@@ -180,6 +180,7 @@ def run_ml_app():
             month = st.session_state.month
             day = st.session_state.day
             hour = st.session_state.hour
+            minute = st.session_state.minute
             distance = st.session_state.distance if st.session_state.distance else 0.0
             pickup_season_Spring = st.session_state.pickup_season_Spring
             pickup_season_Summer = st.session_state.pickup_season_Summer
@@ -198,6 +199,7 @@ def run_ml_app():
                 month,
                 day,
                 hour,
+                minute,
                 distance,
                 pickup_season_Spring,
                 pickup_season_Summer,
@@ -210,7 +212,7 @@ def run_ml_app():
 
 # Fungsi prediksi
 def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude,
-            passenger_count, year, month, day, hour, distance,
+            passenger_count, year, month, day, hour, minute, distance,
             pickup_season_Spring, pickup_season_Summer, pickup_season_Winter,
             pickup_period_Evening, pickup_period_Morning, pickup_period_Night):
 
@@ -224,6 +226,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
         month,
         day,
         hour,
+        minute,
         distance,
         pickup_season_Spring,
         pickup_season_Summer,
@@ -240,6 +243,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
 if __name__ == "__main__":
 
     main()
+
 
 
 
