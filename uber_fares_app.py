@@ -3,6 +3,7 @@ import streamlit.components.v1 as stc
 import pickle
 import folium
 from streamlit_folium import st_folium
+import math
 
 with open('LightGBM_Regression_Model.pkl', 'rb') as file:
     LightGBM_Regression_Model = pickle.load(file)
@@ -37,6 +38,31 @@ def run_ml_app():
              """
     st.markdown(design, unsafe_allow_html=True)
 
+    # --- Fungsi Haversine ---
+    def haversine(coord1, coord2):
+        lat1, lon1 = coord1
+        lat2, lon2 = coord2
+        R = 6371.0  # km
+    
+        phi1 = math.radians(lat1)
+        phi2 = math.radians(lat2)
+        delta_phi = math.radians(lat2 - lat1)
+        delta_lambda = math.radians(lon2 - lon1)
+    
+        a = math.sin(delta_phi / 2) ** 2 + \
+            math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
+    
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        return R * c
+
+    # --- Inisialisasi session state ---
+    if "pickup_coords" not in st.session_state:
+        st.session_state.pickup_coords = None
+    if "dropoff_coords" not in st.session_state:
+        st.session_state.dropoff_coords = None
+    if "distance" not in st.session_state:
+        st.session_state.distance = None
+    
     # --- PETA ---
     st.markdown("### Pilih Titik Pickup & Dropoff di Peta")
     
@@ -53,12 +79,6 @@ def run_ml_app():
     
     map_data = st_folium(m, width=700, height=500)
     
-    # State untuk koordinat
-    if "pickup_coords" not in st.session_state:
-        st.session_state.pickup_coords = None
-    if "dropoff_coords" not in st.session_state:
-        st.session_state.dropoff_coords = None
-    
     # Hanya proses klik jika tidak baru reset
     if not st.session_state.just_reset and map_data and map_data["last_clicked"]:
         lat = map_data["last_clicked"]["lat"]
@@ -70,10 +90,18 @@ def run_ml_app():
         elif st.session_state.dropoff_coords is None:
             st.session_state.dropoff_coords = (lat, lon)
             st.success(f"Dropoff point: {lat:.6f}, {lon:.6f}")
+
+    # --- Hitung jarak dan simpan ke session state ---
+    if st.session_state.pickup_coords and st.session_state.dropoff_coords:
+        jarak_km = haversine(st.session_state.pickup_coords,
+                             st.session_state.dropoff_coords)
+        st.session_state.distance = jarak_km
+        st.success(f"Jarak: {jarak_km:.2f} km")
     
+    # --- Tampilkan data ---
     st.write("Pickup:", st.session_state.pickup_coords)
     st.write("Dropoff:", st.session_state.dropoff_coords)
-    
+    st.write("Distance (km):", st.session_state.distance)
     
         #If button is clilcked
     pass
@@ -87,6 +115,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
