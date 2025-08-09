@@ -70,6 +70,7 @@ def run_ml_app():
     if st.button("Reset Titik"):
         st.session_state.pickup_coords = None
         st.session_state.dropoff_coords = None
+        st.session_state.distance = None
         st.session_state.just_reset = True  # flag reset
     else:
         st.session_state.just_reset = False
@@ -115,6 +116,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
