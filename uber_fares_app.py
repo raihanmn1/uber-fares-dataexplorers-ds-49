@@ -70,8 +70,8 @@ def run_ml_app():
     # --- PETA ---
     st.markdown("### Pilih Titik Pickup & Dropoff di Peta")
 
-    # Simpan waktu sekali saja (timezone New York)
-    if "current_datetime" not in st.session_state:
+    # --- Fungsi untuk set datetime New York ---
+    def set_ny_datetime():
         tz_ny = pytz.timezone("America/New_York")
         ny_time = datetime.now(tz_ny)
         st.session_state.current_datetime = ny_time
@@ -80,13 +80,14 @@ def run_ml_app():
         st.session_state.day = ny_time.day
         st.session_state.hour = ny_time.hour
         st.session_state.minute = ny_time.minute
-        
+            
     # Tombol reset di atas, supaya langsung kosong sebelum baca klik baru
     if st.button("Reset"):
         st.session_state.pickup_coords = None
         st.session_state.dropoff_coords = None
         st.session_state.distance = None
         st.session_state.just_reset = True  # flag reset
+        set_ny_datetime()
     else:
         st.session_state.just_reset = False
     
@@ -141,6 +142,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
