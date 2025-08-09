@@ -165,7 +165,8 @@ def run_ml_app():
     st.write("Dropoff:", st.session_state.dropoff_coords)
     st.write("Distance (km):", st.session_state.distance)
     st.write("Passenger Count:", st.session_state.passenger_count)
-
+    st.write("Season:", season)
+    st.write("Period:", period)
     
     #If button is clilcked
     pass
@@ -179,6 +180,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
