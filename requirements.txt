@@ -1,0 +1,7 @@
+gunicorn
+pandas
+scikit-learn
+streamlit
+folium
+streamlit-folium
+lightgbm
