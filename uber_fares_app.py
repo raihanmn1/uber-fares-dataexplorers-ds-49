@@ -220,13 +220,6 @@ def run_ml_app():
     # Tampilkan hasil prediksi jika ada
     if st.session_state.predicted_fare is not None:
         st.success(f"Predicted Uber Fare: ${st.session_state.predicted_fare:.2f}")
-            """st.write("Features used for prediction:", features)  # debug print fitur
-            
-            st.session_state.predicted_fare = fare_pred 
-
-            if "predicted_fare" in st.session_state and st.session_state.predicted_fare is not None:
-                st.success(f"Predicted Uber Fare: ${st.session_state.predicted_fare:.2f}")"""
-            
 
 # Fungsi prediksi
 def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude,
@@ -260,6 +253,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
 if __name__ == "__main__":
 
     main()
+
 
 
 
