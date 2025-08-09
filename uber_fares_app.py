@@ -40,29 +40,29 @@ def run_ml_app():
 # --- PETA ---
 st.markdown("### Pilih Titik Pickup & Dropoff di Peta")
 
-    # Tombol reset di atas, supaya langsung kosong sebelum baca klik baru
-    if st.button("Reset Titik"):
-        st.session_state.pickup_coords = None
-        st.session_state.dropoff_coords = None
-        st.session_state.just_reset = True  # flag reset
-    else:
-        st.session_state.just_reset = False
+# Tombol reset di atas, supaya langsung kosong sebelum baca klik baru
+if st.button("Reset Titik"):
+    st.session_state.pickup_coords = None
+    st.session_state.dropoff_coords = None
+    st.session_state.just_reset = True  # flag reset
+else:
+    st.session_state.just_reset = False
 
-    m = folium.Map(location=[40.7128, -74.0060], zoom_start=12)
-    m.add_child(folium.LatLngPopup())
+m = folium.Map(location=[40.7128, -74.0060], zoom_start=12)
+m.add_child(folium.LatLngPopup())
 
-    map_data = st_folium(m, width=700, height=500)
+map_data = st_folium(m, width=700, height=500)
 
-    # State untuk koordinat
-    if "pickup_coords" not in st.session_state:
-        st.session_state.pickup_coords = None
-    if "dropoff_coords" not in st.session_state:
-        st.session_state.dropoff_coords = None
+# State untuk koordinat
+if "pickup_coords" not in st.session_state:
+    st.session_state.pickup_coords = None
+if "dropoff_coords" not in st.session_state:
+    st.session_state.dropoff_coords = None
 
-    # Hanya proses klik jika tidak baru reset
-    if not st.session_state.just_reset and map_data and map_data["last_clicked"]:
-        lat = map_data["last_clicked"]["lat"]
-        lon = map_data["last_clicked"]["lng"]
+# Hanya proses klik jika tidak baru reset
+if not st.session_state.just_reset and map_data and map_data["last_clicked"]:
+    lat = map_data["last_clicked"]["lat"]
+    lon = map_data["last_clicked"]["lng"]
 
     if st.session_state.pickup_coords is None:
         st.session_state.pickup_coords = (lat, lon)
@@ -71,14 +71,9 @@ st.markdown("### Pilih Titik Pickup & Dropoff di Peta")
         st.session_state.dropoff_coords = (lat, lon)
         st.success(f"Dropoff point: {lat:.6f}, {lon:.6f}")
 
-    st.write("Pickup:", st.session_state.pickup_coords)
-    st.write("Dropoff:", st.session_state.dropoff_coords)
+st.write("Pickup:", st.session_state.pickup_coords)
+st.write("Dropoff:", st.session_state.dropoff_coords)
 
-        
-    # Structure
-    left, right = st.columns((2,2))
-    
-    
 
     #If button is clilcked
     pass
@@ -92,6 +87,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
