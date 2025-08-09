@@ -62,6 +62,8 @@ def run_ml_app():
         st.session_state.dropoff_coords = None
     if "distance" not in st.session_state:
         st.session_state.distance = None
+    if "passenger_count" not in st.session_state:  # inisialisasi awal
+        st.session_state.passenger_count = 1
     
     # --- PETA ---
     st.markdown("### Pilih Titik Pickup & Dropoff di Peta")
@@ -125,6 +127,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
