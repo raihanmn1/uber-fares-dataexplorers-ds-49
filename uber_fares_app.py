@@ -50,6 +50,22 @@ def run_ml_app():
     
     m = folium.Map(location=[40.7128, -74.0060], zoom_start=12)
     m.add_child(folium.LatLngPopup())
+
+    # Tambahkan marker pickup
+    if st.session_state.pickup_coords:
+        folium.Marker(
+            location=st.session_state.pickup_coords,
+            popup="Pickup Point",
+            icon=folium.Icon(color="green")
+        ).add_to(m)
+    
+    # Tambahkan marker dropoff
+    if st.session_state.dropoff_coords:
+        folium.Marker(
+            location=st.session_state.dropoff_coords,
+            popup="Dropoff Point",
+            icon=folium.Icon(color="red")
+        ).add_to(m)
     
     map_data = st_folium(m, width=700, height=500)
     
@@ -87,6 +103,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
