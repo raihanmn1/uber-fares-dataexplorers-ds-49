@@ -76,7 +76,7 @@ st.write("Dropoff:", st.session_state.dropoff_coords)
 
         
     # Structure
-    left, right = st.columns((2,2))
+left, right = st.columns((2,2))
     
     
 
@@ -92,6 +92,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
