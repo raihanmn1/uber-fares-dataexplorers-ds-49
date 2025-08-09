@@ -64,6 +64,15 @@ def run_ml_app():
         st.session_state.distance = None
     if "passenger_count" not in st.session_state:  # inisialisasi awal
         st.session_state.passenger_count = 1
+
+    # --- Input Passenger Count (selalu muncul dari awal) ---
+    st.session_state.passenger_count = st.number_input(
+        "Passenger Count",
+        min_value=1,
+        max_value=6,
+        value=st.session_state.passenger_count,
+        step=1
+    )
     
     # --- PETA ---
     st.markdown("### Pilih Titik Pickup & Dropoff di Peta")
@@ -100,15 +109,6 @@ def run_ml_app():
                              st.session_state.dropoff_coords)
         st.session_state.distance = jarak_km
         st.success(f"Jarak: {jarak_km:.2f} km")
-
-      # --- Input Passenger Count ---
-        st.session_state.passenger_count = st.number_input(
-            "Passenger Count",
-            min_value=1,
-            max_value=6,
-            value=st.session_state.passenger_count,
-            step=1
-        )
     
     # --- Tampilkan data ---
     st.write("Pickup:", st.session_state.pickup_coords)
@@ -127,6 +127,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
