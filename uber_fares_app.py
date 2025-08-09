@@ -66,6 +66,8 @@ def run_ml_app():
         st.session_state.distance = None
     if "passenger_count" not in st.session_state:  # inisialisasi awal
         st.session_state.passenger_count = 1
+    if "predicted_fare" not in st.session_state:
+        st.session_state.predicted_fare = None
     
     # --- PETA ---
     st.markdown("### Pilih Titik Pickup & Dropoff di Peta")
@@ -189,8 +191,8 @@ def run_ml_app():
             pickup_period_Evening = st.session_state.pickup_period_Evening
             pickup_period_Morning = st.session_state.pickup_period_Morning
             pickup_period_Night = st.session_state.pickup_period_Night
-    
-            fare_pred = predict(
+
+            features = [
                 pickup_longitude,
                 pickup_latitude,
                 dropoff_longitude,
@@ -208,12 +210,23 @@ def run_ml_app():
                 pickup_period_Evening,
                 pickup_period_Morning,
                 pickup_period_Night
-            )
+            ]
 
+            st.write("Features used for prediction:", features)  # debug print fitur
+
+            fare_pred = predict(*features)
+            st.session_state.predicted_fare = fare_pred
+
+    # Tampilkan hasil prediksi jika ada
+    if st.session_state.predicted_fare is not None:
+        st.success(f"Predicted Uber Fare: ${st.session_state.predicted_fare:.2f}")
+            """st.write("Features used for prediction:", features)  # debug print fitur
+            
             st.session_state.predicted_fare = fare_pred 
 
             if "predicted_fare" in st.session_state and st.session_state.predicted_fare is not None:
-                st.success(f"Predicted Uber Fare: ${st.session_state.predicted_fare:.2f}")
+                st.success(f"Predicted Uber Fare: ${st.session_state.predicted_fare:.2f}")"""
+            
 
 # Fungsi prediksi
 def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude,
@@ -242,12 +255,12 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
     ]]
 
     prediction = LightGBM_Regression_Model.predict(features)
-
     return prediction[0]
 
 if __name__ == "__main__":
 
     main()
+
 
 
 
