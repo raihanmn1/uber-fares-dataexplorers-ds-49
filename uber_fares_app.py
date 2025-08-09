@@ -1,6 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as stc
 import pickle
+import folium
 
 with open('LightGBM_Regression_Model.pkl', 'rb') as file:
     LightGBM_Regression_Model = pickle.load(file)
@@ -85,3 +86,4 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
