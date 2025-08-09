@@ -98,12 +98,21 @@ def run_ml_app():
                              st.session_state.dropoff_coords)
         st.session_state.distance = jarak_km
         st.success(f"Jarak: {jarak_km:.2f} km")
+
+      # --- Input Passenger Count ---
+        st.session_state.passenger_count = st.number_input(
+            "Passenger Count",
+            min_value=1,
+            max_value=6,
+            value=st.session_state.passenger_count,
+            step=1
+        )
     
     # --- Tampilkan data ---
     st.write("Pickup:", st.session_state.pickup_coords)
     st.write("Dropoff:", st.session_state.dropoff_coords)
     st.write("Distance (km):", st.session_state.distance)
-    
+    st.write("Passenger Count:", st.session_state.passenger_count)
         #If button is clilcked
     pass
 
@@ -116,6 +125,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
