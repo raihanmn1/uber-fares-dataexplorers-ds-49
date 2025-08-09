@@ -124,7 +124,6 @@ def run_ml_app():
         st.session_state.just_reset = True
         st.session_state.predicted_fare = None 
         set_ny_datetime()
-        st.experimental_rerun() 
     else:
         st.session_state.just_reset = False
     
@@ -249,6 +248,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
 if __name__ == "__main__":
 
     main()
+
 
 
 
