@@ -4,6 +4,7 @@ import pickle
 import folium
 from streamlit_folium import st_folium
 import math
+import pytz
 
 with open('LightGBM_Regression_Model.pkl', 'rb') as file:
     LightGBM_Regression_Model = pickle.load(file)
@@ -67,9 +68,20 @@ def run_ml_app():
     
     # --- PETA ---
     st.markdown("### Pilih Titik Pickup & Dropoff di Peta")
-    
+
+    # Simpan waktu sekali saja (timezone New York)
+    if "current_datetime" not in st.session_state:
+        tz_ny = pytz.timezone("America/New_York")
+        ny_time = datetime.now(tz_ny)
+        st.session_state.current_datetime = ny_time
+        st.session_state.year = ny_time.year
+        st.session_state.month = ny_time.month
+        st.session_state.day = ny_time.day
+        st.session_state.hour = ny_time.hour
+        st.session_state.minute = ny_time.minute
+        
     # Tombol reset di atas, supaya langsung kosong sebelum baca klik baru
-    if st.button("Reset Titik"):
+    if st.button("Reset"):
         st.session_state.pickup_coords = None
         st.session_state.dropoff_coords = None
         st.session_state.distance = None
@@ -111,6 +123,7 @@ def run_ml_app():
     )
     
     # --- Tampilkan data ---
+    st.write("Datetime (New York):", st.session_state.current_datetime)
     st.write("Pickup:", st.session_state.pickup_coords)
     st.write("Dropoff:", st.session_state.dropoff_coords)
     st.write("Distance (km):", st.session_state.distance)
@@ -127,6 +140,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
