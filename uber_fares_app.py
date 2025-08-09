@@ -169,17 +169,53 @@ def run_ml_app():
     st.write("Period:", period)
     
     #If button is clilcked
-    pass
+    if st.session_state.distance is not None and st.session_state.passenger_count is not None:
+        if st.button("Predict Fare"):
+            fare_pred = predict(
+                distance=st.session_state.distance,
+                passenger_count=st.session_state.passenger_count,
+                pickup_season_Spring=st.session_state.pickup_season_Spring,
+                pickup_season_Summer=st.session_state.pickup_season_Summer,
+                pickup_season_Winter=st.session_state.pickup_season_Winter,
+                pickup_period_Evening=st.session_state.pickup_period_Evening,
+                pickup_period_Morning=st.session_state.pickup_period_Morning,
+                pickup_period_Night=st.session_state.pickup_period_Night
+            )
+            st.success(f"Predicted Uber Fare: ${fare_pred:.2f}")
 
-def predict(gender, married, dependent, education, self_employed, applicant_income, coApplicant_income
-                         ,loan_amount, loan_amount_term, credit_history, property_area):
-    
-    #Making prediction
-    pass
+# Fungsi prediksi
+def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude,
+            passenger_count, year, month, day, hour, distance,
+            pickup_season_Spring, pickup_season_Summer, pickup_season_Winter,
+            pickup_period_Evening, pickup_period_Morning, pickup_period_Night):
+
+    features = [[
+        pickup_longitude,
+        pickup_latitude,
+        dropoff_longitude,
+        dropoff_latitude,
+        passenger_count,
+        year,
+        month,
+        day,
+        hour,
+        distance,
+        pickup_season_Spring,
+        pickup_season_Summer,
+        pickup_season_Winter,
+        pickup_period_Evening,
+        pickup_period_Morning,
+        pickup_period_Night
+    ]]
+
+    prediction = LightGBM_Regression_Model.predict(features)
+
+    return prediction[0]
 
 if __name__ == "__main__":
 
     main()
+
 
 
 
