@@ -171,15 +171,40 @@ def run_ml_app():
     #If button is clilcked
     if st.session_state.distance is not None and st.session_state.passenger_count is not None:
         if st.button("Predict Fare"):
+            pickup_longitude = st.session_state.pickup_coords[1] if st.session_state.pickup_coords else 0.0
+            pickup_latitude = st.session_state.pickup_coords[0] if st.session_state.pickup_coords else 0.0
+            dropoff_longitude = st.session_state.dropoff_coords[1] if st.session_state.dropoff_coords else 0.0
+            dropoff_latitude = st.session_state.dropoff_coords[0] if st.session_state.dropoff_coords else 0.0
+            passenger_count = st.session_state.passenger_count
+            year = st.session_state.year
+            month = st.session_state.month
+            day = st.session_state.day
+            hour = st.session_state.hour
+            distance = st.session_state.distance if st.session_state.distance else 0.0
+            pickup_season_Spring = st.session_state.pickup_season_Spring
+            pickup_season_Summer = st.session_state.pickup_season_Summer
+            pickup_season_Winter = st.session_state.pickup_season_Winter
+            pickup_period_Evening = st.session_state.pickup_period_Evening
+            pickup_period_Morning = st.session_state.pickup_period_Morning
+            pickup_period_Night = st.session_state.pickup_period_Night
+    
             fare_pred = predict(
-                distance=st.session_state.distance,
-                passenger_count=st.session_state.passenger_count,
-                pickup_season_Spring=st.session_state.pickup_season_Spring,
-                pickup_season_Summer=st.session_state.pickup_season_Summer,
-                pickup_season_Winter=st.session_state.pickup_season_Winter,
-                pickup_period_Evening=st.session_state.pickup_period_Evening,
-                pickup_period_Morning=st.session_state.pickup_period_Morning,
-                pickup_period_Night=st.session_state.pickup_period_Night
+                pickup_longitude,
+                pickup_latitude,
+                dropoff_longitude,
+                dropoff_latitude,
+                passenger_count,
+                year,
+                month,
+                day,
+                hour,
+                distance,
+                pickup_season_Spring,
+                pickup_season_Summer,
+                pickup_season_Winter,
+                pickup_period_Evening,
+                pickup_period_Morning,
+                pickup_period_Night
             )
             st.success(f"Predicted Uber Fare: ${fare_pred:.2f}")
 
@@ -215,6 +240,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
 if __name__ == "__main__":
 
     main()
+
 
 
 
