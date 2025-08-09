@@ -64,8 +64,6 @@ def run_ml_app():
         st.session_state.distance = None
     if "passenger_count" not in st.session_state:  # inisialisasi awal
         st.session_state.passenger_count = 1
-    if "last_map_click" not in st.session_state:
-        st.session_state.last_map_click = None
 
     # --- Input Passenger Count (selalu muncul dari awal) ---
     st.session_state.passenger_count = st.number_input(
@@ -129,6 +127,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
