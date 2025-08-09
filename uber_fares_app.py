@@ -151,15 +151,14 @@ def run_ml_app():
             st.session_state.dropoff_coords = (lat, lon)
             st.success(f"Dropoff point: {lat:.6f}, {lon:.6f}")
         
-    # Hitung jarak dan transformasi log + scaling
+    # Hitung jarak dan transformasi log
     if st.session_state.pickup_coords and st.session_state.dropoff_coords:
         jarak_km = haversine(st.session_state.pickup_coords, st.session_state.dropoff_coords)
         st.session_state.distance = jarak_km
         st.success(f"Jarak: {jarak_km:.2f} km")
-        distance_log = np.log1p(jarak_km)  # log transform
-        distance_log_scaled = scaler.transform([[distance_log]])[0][0]  # scale
+        distance_log = np.log1p(jarak_km)
     else:
-        distance_log_scaled = 0
+        distance_log = 0
 
     # --- Input Passenger Count (selalu muncul dari awal) ---
     st.session_state.passenger_count = st.number_input(
@@ -232,7 +231,7 @@ def run_ml_app():
 def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude,
             passenger_count, year, month, day, hour, distance_log_scaled,
             pickup_season_Spring, pickup_season_Summer, pickup_season_Winter,
-            pickup_period_Evening, pickup_period_Morning, pickup_period_Night): # << Tambahin distance_log disini
+            pickup_period_Evening, pickup_period_Morning, pickup_period_Night):
 
     features = [[
         pickup_longitude,
@@ -251,16 +250,23 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
         pickup_period_Evening,
         pickup_period_Morning,
         pickup_period_Night
-        # Tambahin distance_log disini
     ]]
 
-    pred_log = LightGBM_Regression_Model.predict(features)
-    pred_fare = np.expm1(pred_log)  # balik dari log fare ke asli
-    return pred_fare[0]
+    # Scaling semua fitur sekaligus
+    features_scaled = scaler.transform([features])
+                
+    pred_log = LightGBM_Regression_Model.predict(features_scaled)
+    pred_fare = np.expm1(pred_log)[0]  # balik dari log fare ke nilai asli
+    
+    st.session_state.predicted_fare = pred_fare
+
+    if st.session_state.predicted_fare is not None:
+        st.success(f"Predicted Uber Fare: ${st.session_state.predicted_fare:.2f}")
 
 if __name__ == "__main__":
 
     main()
+
 
 
 
