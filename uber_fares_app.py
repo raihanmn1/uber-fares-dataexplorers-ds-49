@@ -145,13 +145,15 @@ def run_ml_app():
         elif st.session_state.dropoff_coords is None:
             st.session_state.dropoff_coords = (lat, lon)
             st.success(f"Dropoff point: {lat:.6f}, {lon:.6f}")
-
-    # --- Hitung jarak dan simpan ke session state ---
+        
+    # Hitung jarak asli (km) dan simpan di session state
     if st.session_state.pickup_coords and st.session_state.dropoff_coords:
-        jarak_km = haversine(st.session_state.pickup_coords,
-                             st.session_state.dropoff_coords)
+        jarak_km = haversine(st.session_state.pickup_coords, st.session_state.dropoff_coords)
         st.session_state.distance = jarak_km
         st.success(f"Jarak: {jarak_km:.2f} km")
+        distance_log = np.log1p(jarak_km)  # log transform untuk model input
+    else:
+        distance_log = 0
 
     # --- Input Passenger Count (selalu muncul dari awal) ---
     st.session_state.passenger_count = st.number_input(
@@ -183,7 +185,6 @@ def run_ml_app():
             month = st.session_state.month
             day = st.session_state.day
             hour = st.session_state.hour
-            minute = st.session_state.minute
             distance = st.session_state.distance if st.session_state.distance else 0.0
             pickup_season_Spring = st.session_state.pickup_season_Spring
             pickup_season_Summer = st.session_state.pickup_season_Summer
@@ -191,7 +192,7 @@ def run_ml_app():
             pickup_period_Evening = st.session_state.pickup_period_Evening
             pickup_period_Morning = st.session_state.pickup_period_Morning
             pickup_period_Night = st.session_state.pickup_period_Night
-
+            
             features = [
                 pickup_longitude,
                 pickup_latitude,
@@ -202,14 +203,14 @@ def run_ml_app():
                 month,
                 day,
                 hour,
-                minute,
-                distance,
+                distance_log,
                 pickup_season_Spring,
                 pickup_season_Summer,
                 pickup_season_Winter,
                 pickup_period_Evening,
                 pickup_period_Morning,
-                pickup_period_Night
+                pickup_period_Night,
+                
             ]
 
             st.write("Features used for prediction:", features)  # debug print fitur
@@ -223,9 +224,9 @@ def run_ml_app():
 
 # Fungsi prediksi
 def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude,
-            passenger_count, year, month, day, hour, minute, distance,
+            passenger_count, year, month, day, hour, distance_log,
             pickup_season_Spring, pickup_season_Summer, pickup_season_Winter,
-            pickup_period_Evening, pickup_period_Morning, pickup_period_Night):
+            pickup_period_Evening, pickup_period_Morning, pickup_period_Night): # << Tambahin distance_log disini
 
     features = [[
         pickup_longitude,
@@ -237,22 +238,24 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
         month,
         day,
         hour,
-        minute,
-        distance,
+        distance_log,
         pickup_season_Spring,
         pickup_season_Summer,
         pickup_season_Winter,
         pickup_period_Evening,
         pickup_period_Morning,
         pickup_period_Night
+        # Tambahin distance_log disini
     ]]
 
-    prediction = LightGBM_Regression_Model.predict(features)
-    return prediction[0]
+    pred_log = LightGBM_Regression_Model.predict(features)
+    pred_fare = np.expm1(pred_log)  # balik dari log fare ke asli
+    return pred_fare[0]
 
 if __name__ == "__main__":
 
     main()
+
 
 
 
