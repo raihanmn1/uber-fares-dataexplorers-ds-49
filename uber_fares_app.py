@@ -121,8 +121,10 @@ def run_ml_app():
         st.session_state.pickup_coords = None
         st.session_state.dropoff_coords = None
         st.session_state.distance = None
-        st.session_state.just_reset = True  # flag reset
+        st.session_state.just_reset = True
+        st.session_state.predicted_fare = None 
         set_ny_datetime()
+        st.experimental_rerun() 
     else:
         st.session_state.just_reset = False
     
@@ -208,7 +210,11 @@ def run_ml_app():
                 pickup_period_Morning,
                 pickup_period_Night
             )
-            st.success(f"Predicted Uber Fare: ${fare_pred:.2f}")
+
+            st.session_state.predicted_fare = fare_pred 
+
+            if "predicted_fare" in st.session_state and st.session_state.predicted_fare is not None:
+                st.success(f"Predicted Uber Fare: ${st.session_state.predicted_fare:.2f}")
 
 # Fungsi prediksi
 def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude,
@@ -243,6 +249,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
 if __name__ == "__main__":
 
     main()
+
 
 
 
