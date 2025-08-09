@@ -80,7 +80,11 @@ def run_ml_app():
         st.session_state.day = ny_time.day
         st.session_state.hour = ny_time.hour
         st.session_state.minute = ny_time.minute
-            
+
+    # Set datetime pertama kali load
+    if "current_datetime" not in st.session_state:
+        set_ny_datetime()
+        
     # Tombol reset di atas, supaya langsung kosong sebelum baca klik baru
     if st.button("Reset"):
         st.session_state.pickup_coords = None
@@ -142,6 +146,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
