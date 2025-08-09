@@ -208,7 +208,7 @@ def run_ml_app():
                 month,
                 day,
                 hour,
-                distance_log_scaled,
+                distance_log,
                 pickup_season_Spring,
                 pickup_season_Summer,
                 pickup_season_Winter,
@@ -229,7 +229,7 @@ def run_ml_app():
 
 # Fungsi prediksi
 def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude,
-            passenger_count, year, month, day, hour, distance_log_scaled,
+            passenger_count, year, month, day, hour, distance_log,
             pickup_season_Spring, pickup_season_Summer, pickup_season_Winter,
             pickup_period_Evening, pickup_period_Morning, pickup_period_Night):
 
@@ -243,7 +243,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
         month,
         day,
         hour,
-        distance_log_scaled,
+        distance_log,
         pickup_season_Spring,
         pickup_season_Summer,
         pickup_season_Winter,
@@ -266,6 +266,7 @@ def predict(pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitu
 if __name__ == "__main__":
 
     main()
+
 
 
 
