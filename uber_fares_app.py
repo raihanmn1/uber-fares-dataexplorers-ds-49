@@ -84,7 +84,38 @@ def run_ml_app():
     # Set datetime pertama kali load
     if "current_datetime" not in st.session_state:
         set_ny_datetime()
-        
+
+    # --- Tentukan Season & Period dari datetime ---
+    def get_season(month):
+        if month in [3, 4, 5]:
+            return "Spring"
+        elif month in [6, 7, 8]:
+            return "Summer"
+        elif month in [9, 10, 11]:
+            return "Fall"
+        else:
+            return "Winter"
+    
+    def get_period(hour):
+        if 5 <= hour < 12:
+            return "Morning"
+        elif 12 <= hour < 17:
+            return "Afternoon"
+        elif 17 <= hour < 21:
+            return "Evening"
+        else:
+            return "Night"
+    
+    season = get_season(st.session_state.month)
+    period = get_period(st.session_state.hour)
+    
+    st.session_state.pickup_season_Spring = 1 if season == "Spring" else 0
+    st.session_state.pickup_season_Summer = 1 if season == "Summer" else 0
+    st.session_state.pickup_season_Winter = 1 if season == "Winter" else 0
+    st.session_state.pickup_period_Evening = 1 if period == "Evening" else 0
+    st.session_state.pickup_period_Morning = 1 if period == "Morning" else 0
+    st.session_state.pickup_period_Night = 1 if period == "Night" else 0
+    
     # Tombol reset di atas, supaya langsung kosong sebelum baca klik baru
     if st.button("Reset"):
         st.session_state.pickup_coords = None
@@ -134,7 +165,9 @@ def run_ml_app():
     st.write("Dropoff:", st.session_state.dropoff_coords)
     st.write("Distance (km):", st.session_state.distance)
     st.write("Passenger Count:", st.session_state.passenger_count)
-        #If button is clilcked
+
+    
+    #If button is clilcked
     pass
 
 def predict(gender, married, dependent, education, self_employed, applicant_income, coApplicant_income
@@ -146,6 +179,7 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
 if __name__ == "__main__":
 
     main()
+
 
 
 
