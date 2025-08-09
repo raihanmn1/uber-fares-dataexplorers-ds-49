@@ -76,17 +76,18 @@ st.write("Dropoff:", st.session_state.dropoff_coords)
 
 
     #If button is clilcked
-    pass
+pass
 
 def predict(gender, married, dependent, education, self_employed, applicant_income, coApplicant_income
                          ,loan_amount, loan_amount_term, credit_history, property_area):
     
     #Making prediction
-    pass
+pass
 
 if __name__ == "__main__":
 
     main()
+
 
 
 
