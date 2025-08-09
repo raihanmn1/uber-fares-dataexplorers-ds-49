@@ -82,11 +82,12 @@ def predict(gender, married, dependent, education, self_employed, applicant_inco
                          ,loan_amount, loan_amount_term, credit_history, property_area):
     
     #Making prediction
-pass
+    pass
 
 if __name__ == "__main__":
 
     main()
+
 
 
 
